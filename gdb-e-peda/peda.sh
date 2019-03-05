@@ -1,24 +1,15 @@
 #!/usr/bin/env bash
 
 # baixando peda do github se já não estiver instalado
-echo "[*] Se você tiver acabado de baixar o PEDA, o comando locate não irá encontrá-lo."
-echo "[*] Para achá-lo, rode o script com -f como argumento (./peda.sh -f) para utilizar o find. Essa opção levará mais tempo."
-echo "[*] Se você não tiver o PEDA em seu computador ainda, ele usará o git para baixá-lo."
-
-if [[ $1 = "-f" ]]; then
-    peda_path=$(find / -iname "peda.py" 2> /dev/null)
-else
-    peda_path=$(locate peda.py)
-fi
+peda_path=$(find / -iname "peda.py" 2> /dev/null)
 
 if [[ $peda_path = "" ]]; then
-    git clone https://github.com/longld/peda.git
-    $peda_path="$(pwd)/peda/peda.py"
+    git clone https://github.com/longld/peda.git && $peda_path="$(pwd)/peda/peda.py"
 fi
 
 if [[ $1 = "-att" ]] || [[ $2 = "-att" ]]; then
-    # substitui a sintaxe intel por att na linha 777 do arquivo peda.py
-    sed -i '777s/intel/att/' $peda_path
+    # substitui a sintaxe intel por att na linha 756 do arquivo peda.py
+    sed -i '756s/intel/att/' $peda_path
 fi
 
 echo "source $peda_path" > $HOME/.gdbinit
